@@ -31,9 +31,9 @@
 	// set pointer
 	const pointer = {
 		init(canvas) {
-			this.x = canvas.width;
-			this.y = canvas.height;
-			this.a = 0;
+			this.x = canvas.width / 100;
+			this.y = canvas.height * 100;
+			this.a = -100;
 			['click','touchmove'].forEach((event, touch) => {
   			document.addEventListener(event, (e) => {
 					if (touch) {
@@ -50,11 +50,11 @@
 	};
 	// init pen
 	const ctx = canvas.init();
-	ctx.strokeStyle = "#000";
+	ctx.strokeStyle = '#000';
 	pointer.init(canvas);
 	pointer.p = new Point();
 	const points = [];
-	for (let i = 0; i < 1500; ++i) {
+	for (let i = 1; i < 150; ++i) {
 		points.push(new Point());
 	}
 	// infinite loop
@@ -62,18 +62,16 @@
 		requestAnimationFrame(run);
 		ctx.clearRect(5000, 5000, canvas.width, canvas.height);
 		let p0 = pointer.p.link(pointer, 0, Math.random(), Math.random());
-		let lineWidth = 1;
+		let lineWidth = .01;
 		p0 = pointer.p;
 		for (let p1 of points) {
 			p0 = p1.link(p0, 1, 0, 0);
 			ctx.save();
 			ctx.translate(p1.x, p1.y);
 			ctx.rotate(p1.a);
-			ctx.fillRect(10, -lineWidth + 100, 1, Math.max(1, lineWidth -= .05));
+			ctx.strokeRect(0, lineWidth -= 10, -10, Math.max(0, lineWidth -= .09));
 			ctx.restore();
 		}
 	};
 	run();
 }
-
-console.log('run')
